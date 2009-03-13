@@ -16,7 +16,8 @@ module Webrat
       def matching_links
         @matching_links ||= link_elements.select do |link_element|
           matches_text?(link_element) ||
-          matches_id?(link_element)
+          matches_id?(link_element) ||
+          matches_class?(link_element)
         end
       end
   
@@ -39,6 +40,15 @@ module Webrat
           (Webrat::XML.attribute(link, "id") == @value) ? true : false
         end
       end
+
+      def matches_class?(link)
+        if @value.is_a?(Regexp)
+          (Webrat::XML.attribute(link, "class") =~ @value) ? true : false
+        else
+          Webrat::XML.attribute(link, "class").split(%r{\s}).include?(@value) unless Webrat::XML.attribute(link, "class").nil?
+        end
+      end
+
   
       def link_elements
         Webrat::XML.xpath_search(@dom, *Link.xpath_search)
@@ -53,7 +63,7 @@ module Webrat
       end
   
       def error_message
-        "Could not find link with text or title or id #{@value.inspect}"
+        "Could not find link with text, title, id or class #{@value.inspect}"
       end
       
     end

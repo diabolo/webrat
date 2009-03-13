@@ -122,6 +122,36 @@ describe "click_link" do
     click_link /iddle/
   end
   
+  it "should click links by class" do
+    with_html <<-HTML
+      <html>
+      <a class="piddle" href="/page">Link text</a>
+      </html>
+    HTML
+    webrat_session.should_receive(:get).with("/page", {})
+    click_link 'piddle'
+  end
+  
+  it "should click links by class when there are many classes" do
+    with_html <<-HTML
+      <html>
+      <a class="one two three" href="/page">Link text</a>
+      </html>
+    HTML
+    webrat_session.should_receive(:get).with("/page", {})
+    click_link 'two'
+  end
+  
+  
+  it "should click links by class regex" do
+    with_html <<-HTML
+      <html>
+      <a class="piddlediddle" href="/page">Link text</a>
+      </html>
+    HTML
+    webrat_session.should_receive(:get).with("/page", {})
+    click_link /iddle/
+  end
 
   it "should click rails javascript links with authenticity tokens" do
     with_html <<-HTML
