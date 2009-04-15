@@ -24,7 +24,7 @@ describe Webrat::Configuration do
     config = Webrat::Configuration.new
     config.should open_error_files
   end
-  
+
   it "should detect infinite redirects after 10" do
     config = Webrat::Configuration.new
     config.infinite_redirect_limit.should == 10
@@ -43,7 +43,7 @@ describe Webrat::Configuration do
     Webrat.configure do |config|
       config.open_error_files = false
     end
-    
+
     Webrat.configure do |config|
       config.selenium_server_port = 1234
     end
@@ -52,7 +52,7 @@ describe Webrat::Configuration do
     config.should_not open_error_files
     config.selenium_server_port.should == 1234
   end
-  
+
   [:rails,
   :selenium,
   :rack,
@@ -70,14 +70,14 @@ describe Webrat::Configuration do
     config.should_receive(:require).with("webrat/merb_session")
     config.mode = :merb
   end
-  
+
   describe "Selenium" do
     before :each do
       @config = Webrat::Configuration.new
     end
 
-    it "should use 'selenium' as the application environment by default" do
-      @config.application_environment.should == :selenium
+    it "should use 'test' as the application environment by default" do
+      @config.application_environment.should == :test
     end
 
     it "should use 3001 as the application port by default" do

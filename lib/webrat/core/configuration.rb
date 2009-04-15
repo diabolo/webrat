@@ -57,14 +57,14 @@ module Webrat
     # How many redirects to the same URL should be halted as an infinite redirect
     # loop? Defaults to 10
     attr_accessor :infinite_redirect_limit
-    
+
     def initialize # :nodoc:
       self.open_error_files = true
       self.parse_with_nokogiri = !Webrat.on_java?
-      self.application_environment = :selenium
+      self.application_environment = :test
       self.application_port = 3001
       self.application_address = 'localhost'
-      self.application_framework = 'rails'
+      self.application_framework = :rails
       self.selenium_server_port = 4444
       self.infinite_redirect_limit = 10
       self.selenium_browser_key = '*firefox'
@@ -82,7 +82,7 @@ module Webrat
     # :rails, :selenium, :rack, :sinatra, :mechanize, :merb
     def mode=(mode)
       @mode = mode.to_sym
-      
+
       # This is a temporary hack to support backwards compatibility
       # with Merb 1.0.8 until it's updated to use the new Webrat.configure
       # syntax
