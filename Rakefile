@@ -6,6 +6,8 @@ require 'spec'
 require 'spec/rake/spectask'
 require 'spec/rake/verify_rcov'
 require File.expand_path('./lib/webrat.rb')
+require 'jeweler'
+
 
 ##############################################################################
 # Package && release
@@ -35,7 +37,9 @@ end
 
 Rake::GemPackageTask.new(spec) do |package|
   package.gem_spec = spec
-end
+endrak
+
+Jeweler::Tasks.new(spec)
 
 desc 'Show information about the gem.'
 task :debug_gem do
