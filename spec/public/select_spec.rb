@@ -201,7 +201,7 @@ describe "select" do
   end
 
   it "should properly handle submitting HTML entities in select values" do
-    spec = lambda do
+    pending "needs bug fix" do
       with_html <<-HTML
         <html>
         <form method="post" action="/login">
@@ -213,16 +213,10 @@ describe "select" do
       webrat_session.should_receive(:post).with("/login", "month" => "Peanut butter & jelly")
       click_button
     end
-
-    if Webrat.on_java?
-      spec.call
-    else
-      pending("needs bug fix", &spec)
-    end
   end
 
   it "should properly handle locating with HTML entities in select values" do
-    spec = lambda do
+    pending "needs bug fix" do
       with_html <<-HTML
         <html>
         <form method="post" action="/login">
@@ -236,14 +230,8 @@ describe "select" do
         select "Peanut butter & jelly"
       }.should_not raise_error(Webrat::NotFoundError)
     end
-
-    if Webrat.on_java?
-      spec.call
-    else
-      pending("needs bug fix", &spec)
-    end
   end
-  
+
   it "should submit duplicates selected options as a single value" do
     with_html <<-HTML
       <html>
@@ -253,9 +241,9 @@ describe "select" do
       </form>
       </html>
     HTML
-    
+
     webrat_session.should_receive(:post).with("/login", "clothes" => "pants")
     click_button
   end
-  
+
 end
