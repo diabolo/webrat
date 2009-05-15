@@ -37,7 +37,7 @@ end
 
 Rake::GemPackageTask.new(spec) do |package|
   package.gem_spec = spec
-endrak
+end
 
 Jeweler::Tasks.new(spec)
 
