@@ -13,6 +13,7 @@ describe "have_xpath" do
         <ul>
           <li>First</li>
           <li>Second</li>
+          <li><a href="http://example.org">Third</a></li>
         </ul>
       </div>
     HTML
@@ -86,6 +87,18 @@ describe "have_xpath" do
         node.should have_xpath("//div[@id='main']")
       end
     }.should raise_error(Spec::Expectations::ExpectationNotMetError)
+  end
+
+  it "should match descendants of the matched elements in the block" do
+    @body.should have_xpath("//ul") do |node|
+      node.should have_xpath("//a[@href='http://example.org']")
+    end
+  end
+  
+  it "should allow descendant selectors in the block" do
+    @body.should have_xpath("//div[@id='main']") do |node|
+      node.should have_xpath("//ul//a")
+    end
   end
 
   describe 'asserts for xpath' do
