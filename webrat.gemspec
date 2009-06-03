@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{webrat}
-  s.version = "0.4.4.1"
+  s.version = "0.4.4.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bryan Helmkamp"]
-  s.date = %q{2009-05-18}
+  s.date = %q{2009-06-03}
   s.description = %q{Webrat. Ruby Acceptance Testing for Web applications}
   s.email = %q{bryan@brynary.com}
   s.extra_rdoc_files = [
@@ -121,7 +121,13 @@ Gem::Specification.new do |s|
      "spec/integration/rack/test/test_helper.rb",
      "spec/integration/rack/test/webrat_rack_test.rb",
      "spec/integration/rails/app/controllers/application.rb",
+     "spec/integration/rails/app/controllers/buttons_controller.rb",
+     "spec/integration/rails/app/controllers/fields_controller.rb",
+     "spec/integration/rails/app/controllers/links_controller.rb",
      "spec/integration/rails/app/controllers/webrat_controller.rb",
+     "spec/integration/rails/app/helpers/buttons_helper.rb",
+     "spec/integration/rails/app/helpers/fields_helper.rb",
+     "spec/integration/rails/app/helpers/links_helper.rb",
      "spec/integration/rails/config/boot.rb",
      "spec/integration/rails/config/environment.rb",
      "spec/integration/rails/config/environments/development.rb",
@@ -131,6 +137,9 @@ Gem::Specification.new do |s|
      "spec/integration/rails/config/initializers/mime_types.rb",
      "spec/integration/rails/config/initializers/new_rails_defaults.rb",
      "spec/integration/rails/config/routes.rb",
+     "spec/integration/rails/test/integration/button_click_test.rb",
+     "spec/integration/rails/test/integration/fill_in_test.rb",
+     "spec/integration/rails/test/integration/link_click_test.rb",
      "spec/integration/rails/test/integration/webrat_test.rb",
      "spec/integration/rails/test/test_helper.rb",
      "spec/integration/sinatra/classic_app.rb",
