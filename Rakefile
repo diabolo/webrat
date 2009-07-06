@@ -2,6 +2,7 @@
 require "rake/gempackagetask"
 require 'rake/rdoctask'
 require "rake/clean"
+gem "rspec", "1.2.6"
 require 'spec'
 require 'spec/rake/spectask'
 require 'spec/rake/verify_rcov'
@@ -89,10 +90,47 @@ task :docs => :clobber_docs do
   system "hanna --title 'Webrat #{Webrat::VERSION} API Documentation'"
 end
 
-desc "Run specs using jruby"
-task "spec:jruby" do
+desc "Run everything against multiruby"
+task :multiruby do
+  result = system "multiruby -S rake spec"
+  raise "Multiruby tests failed" unless result
   result = system "jruby -S rake spec"
   raise "JRuby tests failed" unless result
+
+  Dir.chdir "spec/integration/rails" do
+    result = system "multiruby -S rake test_unit:rails"
+    raise "Rails integration tests failed" unless result
+
+    result = system "jruby -S rake test_unit:rails"
+    raise "Rails integration tests failed" unless result
+  end
+
+  Dir.chdir "spec/integration/merb" do
+    result = system "multiruby -S rake spec"
+    raise "Merb integration tests failed" unless result
+
+    result = system "jruby -S rake spec"
+    raise "Rails integration tests failed" unless result
+  end
+
+  Dir.chdir "spec/integration/sinatra" do
+    result = system "multiruby -S rake test"
+    raise "Sinatra integration tests failed" unless result
+
+    result = system "jruby -S rake test"
+    raise "Sinatra integration tests failed" unless result
+  end
+
+  Dir.chdir "spec/integration/rack" do
+    result = system "multiruby -S rake test"
+    raise "Rack integration tests failed" unless result
+
+    result = system "jruby -S rake test"
+    raise "Rack integration tests failed" unless result
+  end
+
+  puts
+  puts "Multiruby OK!"
 end
 
 desc "Run each spec in isolation to test for dependency issues"
@@ -147,7 +185,7 @@ namespace :spec do
         raise "Sinatra integration tests failed" unless result
       end
     end
-    
+
     desc "Run the Sinatra integration specs"
     task :rack do
       Dir.chdir "spec/integration/rack" do
@@ -159,8 +197,6 @@ namespace :spec do
 end
 
 task :default => :spec
-
-task :precommit => ["spec", "spec:jruby", "spec:integration"]
 
 desc 'Removes trailing whitespace'
 task :whitespace do

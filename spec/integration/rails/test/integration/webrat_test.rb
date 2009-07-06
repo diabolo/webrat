@@ -34,6 +34,9 @@ class WebratTest < ActionController::IntegrationTest
     fill_in "Text field", :with => "value"
     click_button
 
+    automate do
+      selenium.wait_for_page_to_load
+    end
     assert response.body !~ /value/
     assert response.body =~ /custom_param/
   end
@@ -47,6 +50,25 @@ class WebratTest < ActionController::IntegrationTest
   test "should not follow external redirects" do
     visit external_redirect_path
     assert response.redirect?
+  end
+
+  test "should recognize the host header to follow redirects properly" do
+    header "Host", "foo.bar"
+    visit host_redirect_path
+    assert !response.redirect?
+    assert response.body.include?("OK")
+  end
+
+  test "should click link by text" do
+    visit internal_redirect_path
+    click_link "Test Link Text"
+    assert_contain("Webrat Form")
+  end
+
+  test "should click link by id" do
+    visit internal_redirect_path
+    click_link "link_id"
+    assert_contain("Webrat Form")
   end
 
   test "should be able to assert xpath" do

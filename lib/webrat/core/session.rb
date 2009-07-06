@@ -69,6 +69,7 @@ For example:
 
     # For backwards compatibility -- removing in 1.0
     def current_page #:nodoc:
+      warn "current_page is deprecated and will be going away in the next release. Use current_url instead."
       page = OpenStruct.new
       page.url = @current_url
       page.http_method = @http_method
@@ -143,7 +144,7 @@ For example:
     end
 
     def redirect? #:nodoc:
-      response_code / 100 == 3
+      (response_code / 100).to_i == 3
     end
 
     def internal_redirect?
@@ -272,7 +273,7 @@ For example:
     end
 
     def current_host
-      URI.parse(current_url).host || "www.example.com"
+      URI.parse(current_url).host || @custom_headers["Host"] || "www.example.com"
     end
 
     def response_location_host

@@ -1,5 +1,6 @@
-require "webrat/core_extensions/blank"
+require "English"
 
+require "webrat/core_extensions/blank"
 require "webrat/core/elements/element"
 
 module Webrat

@@ -1,15 +1,14 @@
 require "webrat"
-
-require "cgi"
-gem "extlib"
-require "extlib"
 require "merb-core"
-
-# HashWithIndifferentAccess = Mash
+require "webrat/merb_multipart_support"
 
 module Webrat
   class MerbSession < Session #:nodoc:
     include Merb::Test::MakeRequest
+
+    # Include Webrat's own version of multipart_post/put because the officially
+    # supported methods in Merb don't perform the request correctly.
+    include MerbMultipartSupport
 
     attr_accessor :response
 
@@ -38,11 +37,33 @@ module Webrat
     end
 
     def do_request(url, data, headers, method)
-      @response = request(url,
-        :params => (data && data.any?) ? data : nil,
-        :headers => headers,
-        :method => method)
+      if method == "POST" && has_file?(data)
+        @response = multipart_post(url, data, :headers => headers)
+
+      elsif method == "PUT" && has_file?(data)
+        @response = multipart_put(url, data, :headers => headers)
+
+      else
+        @response = request(url,
+          :params => (data && data.any?) ? data : nil,
+          :headers => headers,
+          :method => method)
+      end
     end
+
+    protected
+
+      # Recursively search the data for a file attachment.
+      def has_file?(data)
+        data.each do |key, value|
+          if value.is_a?(Hash)
+            return has_file?(value)
+          else
+            return true if value.is_a?(File)
+          end
+        end
+        return false
+      end
 
   end
 end
@@ -55,11 +76,5 @@ module Merb #:nodoc:
         @_webrat_session.response = @_webrat_session.request(uri, env)
       end
     end
-  end
-end
-
-class Merb::Test::RspecStory #:nodoc:
-  def browser
-    @browser ||= Webrat::MerbSession.new
   end
 end

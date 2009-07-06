@@ -21,27 +21,6 @@ describe Webrat::Session do
     session.should respond_to(:current_dom)
   end
 
-  it "should open the page in the browser in MacOSX" do
-    session = Webrat::Session.new
-    session.stub!(:ruby_platform => 'darwin')
-    session.should_receive(:`).with("open path")
-    session.open_in_browser("path")
-  end
-
-  it "should open the page in the browser in cygwin" do
-    session = Webrat::Session.new
-    session.stub!(:ruby_platform => 'i386-cygwin')
-    session.should_receive(:`).with("rundll32 url.dll,FileProtocolHandler path\\to\\file")
-    session.open_in_browser("path/to/file")
-  end
-
-  it "should open the page in the browser in Win32" do
-    session = Webrat::Session.new
-    session.stub!(:ruby_platform => 'win32')
-    session.should_receive(:`).with("rundll32 url.dll,FileProtocolHandler path\\to\\file")
-    session.open_in_browser("path/to/file")
-  end
-
   it "should provide a current_page for backwards compatibility" do
     session = Webrat::Session.new
     current_page = session.current_page
@@ -125,6 +104,24 @@ describe Webrat::Session do
   describe "#redirect?" do
     before(:each) do
       webrat_session = Webrat::Session.new
+    end
+
+    it "should return true if the last response was a redirect and Fixnum#/ returns a Rational" do
+      # This happens if the ruby-units gem has been required
+      Fixnum.class_eval do
+        alias_method :original_divide, "/".to_sym
+
+        def /(other)
+          Rational(self, other)
+        end
+      end
+
+      webrat_session.stub!(:response_code => 301)
+      webrat_session.redirect?.should be_true
+
+      Fixnum.class_eval do
+        alias_method "/".to_sym, :original_divide
+      end
     end
 
     it "should return true if the last response was a redirect" do
