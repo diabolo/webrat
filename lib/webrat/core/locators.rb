@@ -1,3 +1,4 @@
+require "webrat/core/locators/table_like_locator"
 require "webrat/core/locators/area_locator"
 require "webrat/core/locators/button_locator"
 require "webrat/core/locators/field_labeled_locator"

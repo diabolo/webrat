@@ -1,6 +1,11 @@
 == Git
 
-Minor enhancements
+* Major enhancements
+
+  * New #table_like(css_locator). Returns a TableLike object with a #to_a that creates a 2D Array of String.
+    Supported elements: table, dl, ul and ol. Handy for Cucumber::Ast::Table#diff! (Aslak Hellesøy)
+
+* Minor enhancements
 
   * Base Webrat::MIME on Rack::Mime (Simon Rozet)
   * Support file uploads in Rack mode (Simon Rozet)
