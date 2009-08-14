@@ -2,7 +2,7 @@ module Webrat
   module Locators
     class TableLikeLocator < Locator # :nodoc:
       def locate
-        Element.load(@session, table_element)
+        TableLike.load(@session, table_element)
       end
 
       def table_element
