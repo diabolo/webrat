@@ -16,10 +16,10 @@ module Webrat
     end
 
     def webrat_session
-      if Webrat.configuration.mode == :rack_test
-        @_webrat_session ||= ::Webrat::RackTestSession.new(rack_test_session)
-      else
-        @_webrat_session ||= ::Webrat.session_class.new(self)
+      @_webrat_session ||= begin
+        session = Webrat.session_class.new
+        session.adapter = Webrat.adapter_class.new(self) if session.respond_to?(:adapter=)
+        session
       end
     end
 
