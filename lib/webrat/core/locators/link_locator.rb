@@ -40,15 +40,15 @@ module Webrat
           link["id"] == @value ? true : false
         end
       end
-
+      
       def matches_class?(link)
         if @value.is_a?(Regexp)
-          (Webrat::XML.attribute(link, "class") =~ @value) ? true : false
+          link["class"] =~ @value ? true : false
         else
-          Webrat::XML.attribute(link, "class").split(%r{\s}).include?(@value) unless Webrat::XML.attribute(link, "class").nil?
+          link["class"].split(%r{\s}).include?(@value) unless link["class"].nil?
         end
       end
-
+      
       def link_elements
         @dom.xpath(*Link.xpath_search)
       end
