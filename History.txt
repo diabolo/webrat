@@ -1,4 +1,9 @@
 == Git
+* Major enhancements
+
+  * New #table_like(css_locator). Returns a TableLike object with a #to_a that creates a 2D Array of String.
+    Supported elements: table, dl, ul and ol. Handy for Cucumber::Ast::Table#diff! (Aslak Hellesøy)
+
 
 REMOVED: Support for Hpricot + REXML as an alternative to Nokogiri.
 
