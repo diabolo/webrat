@@ -21,7 +21,7 @@ module Webrat
           </table>
         HTML
 
-        node = Webrat::XML.css_search(Webrat::XML.document(html), "table").first
+        node = Webrat::XML.document(html).css("table").first
         element = TableLike.new(nil, node)
         element.to_a.should == [
           %w{tool dude},
@@ -40,7 +40,7 @@ module Webrat
           </table>
         HTML
 
-        node = Webrat::XML.css_search(Webrat::XML.document(html), "dl").first
+        node = Webrat::XML.document(html).css("dl").first
         element = TableLike.new(nil, node)
         element.to_a.should == [
           %w{webrat bryan},
@@ -58,7 +58,7 @@ module Webrat
           </ul>
         HTML
 
-        node = Webrat::XML.css_search(Webrat::XML.document(html), "ul").first
+        node = Webrat::XML.document(html).css("ul").first
         element = TableLike.new(nil, node)
         element.to_a.should == [
           %w{webrat},

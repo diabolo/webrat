@@ -6,7 +6,7 @@ module Webrat
       end
 
       def table_element
-        Webrat::XML.css_search(@dom, @value)[0]
+        @element.css(@dom, @value)[0]
       end
 
       def error_message
