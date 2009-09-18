@@ -1,3 +1,5 @@
+require "rubygems"
+
 begin
   require 'jeweler'
 
@@ -23,7 +25,9 @@ Most Ruby web frameworks and testing frameworks are supported.
     s.add_dependency "nokogiri", ">= 1.2.0"
     s.add_dependency "rack", ">= 1.0"
 
-    # TODO: Add development dependencies
+    s.add_development_dependency "rails", ">= 2.3"
+    s.add_development_dependency "merb-core", ">= 1.0"
+    s.add_development_dependency "launchy"
   end
 
   Jeweler::RubyforgeTasks.new
@@ -113,12 +117,16 @@ end
 
 namespace :spec do
   desc "Run the integration specs"
-  task :integration => ["integration:rails", "integration:merb", "integration:sinatra", "integration:rack"]
+  task :integration => [
+    "integration:rack",
+    "integration:sinatra",
+    "integration:merb",
+    "integration:mechanize",
+    "integration:rails:webrat",
+    "integration:rails:selenium",
+  ]
 
   namespace :integration do
-    desc "Run the Rails integration specs"
-    task :rails => ['rails:webrat'] #,'rails:selenium'] currently not running selenium as it doesn't pass.
-
     namespace :rails do
       task :selenium do
         Dir.chdir "spec/integration/rails" do
@@ -158,6 +166,14 @@ namespace :spec do
         raise "Rack integration tests failed" unless result
       end
     end
+
+    desc "Run the Mechanize integration specs"
+    task :mechanize do
+      Dir.chdir "spec/integration/mechanize" do
+        result = system "rake spec"
+        raise "Mechanize integration tests failed" unless result
+      end
+    end
   end
 end
 
@@ -168,6 +184,7 @@ end
 
 if defined?(Jeweler)
   task :spec => :check_dependencies
+  task :build => :gemspec
 end
 
 task :default => :spec

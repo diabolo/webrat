@@ -16,11 +16,11 @@ module Webrat
     end
 
     def webrat_session
-      @_webrat_session ||= ::Webrat::Session.new(webrat_adapter)
-    end
-
-    def webrat_adapter
-      @_webrat_adapter ||= Webrat.session_class.new(self)
+      @_webrat_session ||= begin
+        session = Webrat.session_class.new
+        session.adapter = Webrat.adapter_class.new(self) if session.respond_to?(:adapter=)
+        session
+      end
     end
 
     # all of these methods delegate to the @session, which should
@@ -39,6 +39,7 @@ module Webrat
       :unchecks, :uncheck,
       :chooses, :choose,
       :selects, :select,
+      :unselects, :unselect,
       :attaches_file, :attach_file,
       :current_page,
       :current_url,

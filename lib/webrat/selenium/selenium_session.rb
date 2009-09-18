@@ -3,6 +3,8 @@ require "webrat/selenium/selenium_rc_server"
 require "webrat/selenium/application_server_factory"
 require "webrat/selenium/application_servers/base"
 
+require "selenium"
+
 module Webrat
   class TimeoutError < WebratError
   end
@@ -77,7 +79,12 @@ module Webrat
     webrat_deprecate :clicks_button, :click_button
 
     def click_link(link_text_or_regexp, options = {})
-      pattern = adjust_if_regexp(link_text_or_regexp)
+      if link_text_or_regexp.is_a?(Regexp)
+        pattern = "evalregex:#{link_text_or_regexp.inspect}"
+      else
+        pattern = link_text_or_regexp.to_s
+      end
+
       locator = "webratlink=#{pattern}"
       selenium.wait_for_element locator, :timeout_in_seconds => 5
       selenium.click locator

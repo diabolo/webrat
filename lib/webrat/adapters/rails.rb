@@ -1,11 +1,8 @@
-require "webrat"
-
-require "action_controller"
-require "action_controller/integration"
+require "webrat/integrations/rails"
 require "action_controller/record_identifier"
 
 module Webrat
-  class RailsSession #:nodoc:
+  class RailsAdapter #:nodoc:
     include ActionController::RecordIdentifier
 
     attr_reader :integration_session
@@ -95,12 +92,5 @@ module Webrat
     def response #:nodoc:
       integration_session.response
     end
-  end
-end
-
-module ActionController #:nodoc:
-  IntegrationTest.class_eval do
-    include Webrat::Methods
-    include Webrat::Matchers
   end
 end

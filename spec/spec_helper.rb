@@ -11,7 +11,7 @@ $LOAD_PATH.unshift(webrat_path) unless $LOAD_PATH.include?(webrat_path)
 AssertionFailedError = Test::Unit::AssertionFailedError rescue MiniTest::Assertion # ruby1.9 compat
 
 require "webrat"
-require File.expand_path(File.dirname(__FILE__) + "/fakes/test_session")
+require File.expand_path(File.dirname(__FILE__) + "/fakes/test_adapter")
 
 module Webrat
   @@previous_config = nil
@@ -46,6 +46,8 @@ Spec::Runner.configure do |config|
     Webrat.reset_for_test
   end
 end
+
+require "merb-core"
 
 Webrat.configure do |config|
   config.mode = :merb
