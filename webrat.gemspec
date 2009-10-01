@@ -5,12 +5,17 @@
 
 Gem::Specification.new do |s|
   s.name = %q{webrat}
-  s.version = "0.5.1"
+  s.version = "0.5.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Bryan Helmkamp"]
-  s.date = %q{2009-08-25}
-  s.description = %q{Webrat lets you quickly write expressive and robust acceptance tests for a Ruby web application. It supports simulating a browser inside a Ruby process to avoid the performance hit and browser dependency of Selenium or Watir, but the same API can also be used to drive real Selenium tests when necessary (eg. for testing AJAX interactions). Most Ruby web frameworks and testing frameworks are supported.}
+  s.date = %q{2009-10-01}
+  s.description = %q{Webrat lets you quickly write expressive and robust acceptance tests
+for a Ruby web application. It supports simulating a browser inside
+a Ruby process to avoid the performance hit and browser dependency of
+Selenium or Watir, but the same API can also be used to drive real
+Selenium tests when necessary (eg. for testing AJAX interactions).
+Most Ruby web frameworks and testing frameworks are supported.}
   s.email = %q{bryan@brynary.com}
   s.extra_rdoc_files = [
     "History.txt",
@@ -41,6 +46,7 @@ Gem::Specification.new do |s|
      "lib/webrat/core/elements/label.rb",
      "lib/webrat/core/elements/link.rb",
      "lib/webrat/core/elements/select_option.rb",
+     "lib/webrat/core/elements/table_like.rb",
      "lib/webrat/core/locators.rb",
      "lib/webrat/core/locators/area_locator.rb",
      "lib/webrat/core/locators/button_locator.rb",
@@ -53,6 +59,7 @@ Gem::Specification.new do |s|
      "lib/webrat/core/locators/link_locator.rb",
      "lib/webrat/core/locators/locator.rb",
      "lib/webrat/core/locators/select_option_locator.rb",
+     "lib/webrat/core/locators/table_like_locator.rb",
      "lib/webrat/core/logging.rb",
      "lib/webrat/core/matchers.rb",
      "lib/webrat/core/matchers/have_content.rb",
@@ -192,8 +199,8 @@ Gem::Specification.new do |s|
      "spec/private/core/configuration_spec.rb",
      "spec/private/core/field_spec.rb",
      "spec/private/core/link_spec.rb",
-     "spec/private/core/logging_spec.rb",
      "spec/private/core/session_spec.rb",
+     "spec/private/core/table_like_spec.rb",
      "spec/private/mechanize/mechanize_adapter_spec.rb",
      "spec/private/nokogiri_spec.rb",
      "spec/private/rails/attaches_file_spec.rb",
@@ -232,12 +239,11 @@ Gem::Specification.new do |s|
      "vendor/selenium-server.jar",
      "webrat.gemspec"
   ]
-  s.has_rdoc = true
   s.homepage = %q{http://github.com/brynary/webrat}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{webrat}
-  s.rubygems_version = %q{1.3.1}
+  s.rubygems_version = %q{1.3.5}
   s.summary = %q{Ruby Acceptance Testing for Web applications}
   s.test_files = [
     "spec/fakes/test_adapter.rb",
@@ -293,8 +299,8 @@ Gem::Specification.new do |s|
      "spec/private/core/configuration_spec.rb",
      "spec/private/core/field_spec.rb",
      "spec/private/core/link_spec.rb",
-     "spec/private/core/logging_spec.rb",
      "spec/private/core/session_spec.rb",
+     "spec/private/core/table_like_spec.rb",
      "spec/private/mechanize/mechanize_adapter_spec.rb",
      "spec/private/nokogiri_spec.rb",
      "spec/private/rails/attaches_file_spec.rb",
@@ -332,17 +338,26 @@ Gem::Specification.new do |s|
 
   if s.respond_to? :specification_version then
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
-    s.specification_version = 2
+    s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<nokogiri>, [">= 1.2.0"])
       s.add_runtime_dependency(%q<rack>, [">= 1.0"])
+      s.add_development_dependency(%q<rails>, [">= 2.3"])
+      s.add_development_dependency(%q<merb-core>, [">= 1.0"])
+      s.add_development_dependency(%q<launchy>, [">= 0"])
     else
       s.add_dependency(%q<nokogiri>, [">= 1.2.0"])
       s.add_dependency(%q<rack>, [">= 1.0"])
+      s.add_dependency(%q<rails>, [">= 2.3"])
+      s.add_dependency(%q<merb-core>, [">= 1.0"])
+      s.add_dependency(%q<launchy>, [">= 0"])
     end
   else
     s.add_dependency(%q<nokogiri>, [">= 1.2.0"])
     s.add_dependency(%q<rack>, [">= 1.0"])
+    s.add_dependency(%q<rails>, [">= 2.3"])
+    s.add_dependency(%q<merb-core>, [">= 1.0"])
+    s.add_dependency(%q<launchy>, [">= 0"])
   end
 end
